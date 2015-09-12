@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"strconv"
 	"time"
+	"bytes"
 )
 
 type sta struct {
@@ -17,28 +18,30 @@ func download(stacja int) sta {
 	stais := strconv.Itoa(stacja)
 	var stastr string
 	if stacja<1 || stacja>26 {
-		error
-	}
-	else if stacja<10 {
+		panic
+	} else if stacja<10 {
 		stastr = "00" + stais + "TOR"
-	}
-	else {
+	} else {
 		stastr = "0" + stais + "TOR"
 	}
 	var url string
 	url = "http://trm24.pl/panel-trm/" + stastr + ".jsp"
 
-	cza = time.Now().Unix()
+	cza := time.Now().Unix()
 
-	response,get:=http.Get(url)
+	response,err:=http.Get(url)
 	if err!=nil {
-		return
+		return sta{-1,stacja,stastr,cza}
 	}
 	defer response.Body.Close()
 
-	sta := ile{pars(response.Body),stacja,stastr,cza}
+	buf := new(bytes.Buffer)
+	buf.ReadFrom(response.Body)
+	pagestr := buf.String()
 
-	sta.giveme()
+	star := sta{pars(&pagestr),stacja,stastr,cza}
 
-	return sta
+	star.giveme()
+
+	return star
 }
