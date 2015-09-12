@@ -1,2 +1,2 @@
-git push -u origin master# trmstac
+# trmstac
 Similar to ArchieT/stacjetrm, but now rewritten in Go.
