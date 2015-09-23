@@ -1,4 +1,4 @@
-//package get
+package get
 
 //import (
 //	"net/http"

@@ -33,16 +33,14 @@ func singpars(frag *string, nlista *[27]sta, enasz *error) {
 	owol, erronintwol := strconv.Atoi(resintwol)
 	nsta := sta{osta,orow,owol}
 	nlista[osta-1] = nsta
-	var erronint error
 	switch {
 	case erronintsta!=nil:
-		erronint:=erronintsta
+		*enasz=erronintsta
 	case erronintrow!=nil:
-		errorint:=erronintrow
+		*enasz=erronintrow
 	case erronintwol!=nil:
-		erronint:=erronintwol
+		*enasz=erronintwol
 	}
-	if erronint!=nil {*enasz=erronint}
 }
 
 

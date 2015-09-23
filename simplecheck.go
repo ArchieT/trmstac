@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"get"
-	"stadata"
+	"github.com/ArchieT/trmstac/get"
+	"github.com/ArchieT/trmstac/stadata"
 )
 
 func main(){
