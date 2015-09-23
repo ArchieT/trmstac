@@ -32,7 +32,7 @@ func download() shot {
 	//if parserr!=nil {
 	star := shot{parsed,cza,parserr}
 
-	star.giveme()
+//	star.giveme()
 
 	return star
 }
