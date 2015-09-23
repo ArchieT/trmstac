@@ -5,6 +5,6 @@ import (
 	"strconv"
 )
 
-func (row *sta) giveme() {
+func (row *shot) giveme() {
 	/* TODO: Add sending the data to my server */
 }
