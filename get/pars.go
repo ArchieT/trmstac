@@ -1,9 +1,9 @@
 package get
 
 import (
-	"fmt"
 	"regexp"
 	"strconv"
+	"sync"
 )
 
 type sta struct {num,row,wol int}
@@ -19,40 +19,40 @@ var rwol = regexp.MustCompile(`</br>\s+Wolne sloty \d+ ',`)
 var rint = regexp.MustCompile(`\d+`)
 //rflo := regexp.MustCompile(`\d+\.\d+`)
 
-func singpars(frag *string, nlista *[27]sta, enasz *error) {
-	fmt.Println(*frag)
-	ressta := rsta.FindString(*frag)
-	fmt.Println(ressta)
-	resrow := rrow.FindString(*frag)
-	fmt.Println(resrow)
-	reswol := rwol.FindString(*frag)
-	fmt.Println(reswol)
-	//resloc := rloc.FindString(frag)
-	//reslat := rlat.FindString(resloc)
-	//reslon := rlon.FindString(resloc)
-	resintsta := rint.FindString(ressta)
-	resintrow := rint.FindString(resrow)
-	resintwol := rint.FindString(reswol)
-	osta, erronintsta := strconv.Atoi(resintsta)
-	orow, erronintrow := strconv.Atoi(resintrow)
-	owol, erronintwol := strconv.Atoi(resintwol)
-	nsta := sta{osta,orow,owol}
-	nlista[osta-1] = nsta
-	switch {
-	case erronintsta!=nil:
-		*enasz=erronintsta
-	case erronintrow!=nil:
-		*enasz=erronintrow
-	case erronintwol!=nil:
-		*enasz=erronintwol
-	}
-}
-
-
 func pars(skad *string) ([27]sta, error) {
 	var lista [27]sta
 	var errnasz error
 	resall := rall.FindAllString(*skad,-1)
-		for j,_ := range resall {go singpars(&resall[j], &lista, &errnasz)}
-		return lista, errnasz
+	var wg sync.WaitGroup
+	for j,_ := range resall {
+		wg.Add(1)
+		go func(frag *string) {
+			defer wg.Done()
+			ressta := rsta.FindString(*frag)
+			resrow := rrow.FindString(*frag)
+			reswol := rwol.FindString(*frag)
+			//resloc := rloc.FindString(frag)
+			//reslat := rlat.FindString(resloc)
+			//reslon := rlon.FindString(resloc)
+			resintsta := rint.FindString(ressta)
+			resintrow := rint.FindString(resrow)
+			resintwol := rint.FindString(reswol)
+			osta, erronintsta := strconv.Atoi(resintsta)
+			orow, erronintrow := strconv.Atoi(resintrow)
+			owol, erronintwol := strconv.Atoi(resintwol)
+			nsta := sta{osta,orow,owol}
+			lista[osta-1] = nsta
+			switch {
+			case erronintsta!=nil:
+				errnasz=erronintsta
+			case erronintrow!=nil:
+				errnasz=erronintrow
+			case erronintwol!=nil:
+				errnasz=erronintwol
+			}
+		}(&resall[j])
+
+	}
+	wg.Wait()
+	return lista, errnasz
 }
