@@ -1,6 +1,7 @@
 package get
 
 import (
+	"fmt"
 	"regexp"
 	"strconv"
 )
@@ -19,9 +20,13 @@ var rint = regexp.MustCompile(`\d+`)
 //rflo := regexp.MustCompile(`\d+\.\d+`)
 
 func singpars(frag *string, nlista *[27]sta, enasz *error) {
+	fmt.Println(*frag)
 	ressta := rsta.FindString(*frag)
+	fmt.Println(ressta)
 	resrow := rrow.FindString(*frag)
+	fmt.Println(resrow)
 	reswol := rwol.FindString(*frag)
+	fmt.Println(reswol)
 	//resloc := rloc.FindString(frag)
 	//reslat := rlat.FindString(resloc)
 	//reslon := rlon.FindString(resloc)

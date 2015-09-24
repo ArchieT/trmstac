@@ -12,7 +12,7 @@ type shot struct{
 	err error
 }
 
-func download() shot {
+func Download() shot {
 	url := "http://trm24.pl/panel-trm/maps.jsp"
 	cza := time.Now().Unix()
 	response,err:=http.Get(url)
