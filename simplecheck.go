@@ -13,7 +13,8 @@ func main(){
 	for ib,b := range a.Stali {
 		fmt.Print(" ", stadata.List[ib].Stastr, " | ")
 		for i:=b.Row;i>0;i-- {
-			fmt.Print("█")
+			//fmt.Print("█")
+			fmt.Print("▉")
 		}
 		for i:=b.Wol;i>0;i-- {
 			fmt.Print("▒")
