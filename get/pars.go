@@ -6,7 +6,7 @@ import (
 	"sync"
 )
 
-type sta struct {num,row,wol int}
+type sta struct {Num,Row,Wol int}
 
 //rall := regexp.MustCompile(`Stacja nr\s \d+\s+</br>\s+Dostępne rowery: \d+\s+</br>\s+Wolne sloty \d+ ', \d+\.\d+ , \d+\.\d+ , 'http:`)
 var rall = regexp.MustCompile(`Stacja nr\s \d+\s+</br>\s+Dostępne rowery: \d+\s+</br>\s+Wolne sloty \d+ ',`)

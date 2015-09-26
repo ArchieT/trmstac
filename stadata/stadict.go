@@ -7,13 +7,13 @@ type Vertex struct {
 
 
 type sdata struct {
-	num int
-	stastr, staaddrloc string
-	staloc Vertex
-	rowslot int
+	Num int
+	Stastr, Staaddrloc string
+	Staloc Vertex
+	Rowslot int
 }
 
-var list = [27]sdata{
+var List = [27]sdata{
 	sdata{1,`001TOR`,`Rynek Staromiejski`,Vertex{53.010747 , 18.603927},15},
 	sdata{2,`002TOR`,`Plac św. Katarzyny`,Vertex{53.013731 , 18.612896},15},
 	sdata{3,`003TOR`,`Plac Rapackiego`,Vertex{53.009713 , 18.600316},25},

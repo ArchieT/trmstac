@@ -7,9 +7,9 @@ import (
 )
 
 type shot struct{
-	stali [27]sta
-	cza int64
-	err error
+	Stali [27]sta
+	Cza int64
+	Err error
 }
 
 func Download() shot {
