@@ -8,13 +8,13 @@ import (
 
 type shot struct{
 	Stali [27]sta
-	Cza int64
+	Cza time.Time
 	Err error
 }
 
 func Download() shot {
 	url := "http://trm24.pl/panel-trm/maps.jsp"
-	cza := time.Now().Unix()
+	cza := time.Now()
 	response,err:=http.Get(url)
 	if err!=nil {
 		var zlalista [27]sta
