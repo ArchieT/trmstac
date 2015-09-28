@@ -21,7 +21,7 @@ var List = [27]sdata{
 	sdata{5,`005TOR`,`ul. Szosa Chełmińska - Targowisko Miejskie`,Vertex{53.01801 , 18.600215},15},
 	sdata{6,`006TOR`,`ul. Gagarina - Biblioteka Uniwersytecka`,Vertex{53.020541 , 18.570548},15},
 	sdata{7,`007TOR`,`ul. Broniewskiego - Tesco`,Vertex{53.013509 , 18.571054},15},
-	sdata{8,`008TOR`,`ul. Gen. Józefa Hallera - Polo Market`,Vertex{53.995533 , 18.617013},15},
+	sdata{8,`008TOR`,`ul. Gen. Józefa Hallera - basen`,Vertex{52.995533 , 18.617013},15},
 	sdata{9,`009TOR`,`ul. Szosa Chełmińska - Polo Market`,Vertex{53.042359 , 18.580434},15},
 	sdata{10,`010TOR`,`PKP Toruń Główny`,Vertex{53.001739 , 18.614953},15},
 	sdata{11,`011TOR`,`ul. Dziewulskiego - Komisariat Policji`,Vertex{53.027362 , 18.665074},15},
