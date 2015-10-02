@@ -24,7 +24,7 @@ func pars(skad *string) ([27]sta, error) {
 	var errnasz error
 	resall := rall.FindAllString(*skad,-1)
 	var wg sync.WaitGroup
-	for j,_ := range resall {
+	for j := range resall {
 		wg.Add(1)
 		go func(frag *string) {
 			defer wg.Done()
