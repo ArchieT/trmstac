@@ -6,13 +6,15 @@ import (
 	"bytes"
 )
 
-type shot struct{
+// Shot : Stali - [27]sta , Cza time.Time , Err error
+type Shot struct{
 	Stali [27]sta
 	Cza time.Time
 	Err error
 }
 
-func Download() shot {
+// Download : returns a Shot
+func Download() Shot {
 	url := "http://trm24.pl/panel-trm/maps.jsp"
 	cza := time.Now()
 	response,err:=http.Get(url)
@@ -21,7 +23,7 @@ func Download() shot {
 		for o:=0;o<27;o++ {
 			zlalista[o]=sta{-1,-1,-1}
 		}
-		return shot{zlalista,cza,err}
+		return Shot{zlalista,cza,err}
 	}
 	defer response.Body.Close()
 
@@ -30,7 +32,7 @@ func Download() shot {
 	pagestr := buf.String()
 	parsed, parserr := pars(&pagestr)
 	//if parserr!=nil {
-	star := shot{parsed,cza,parserr}
+	star := Shot{parsed,cza,parserr}
 
 //	star.giveme()
 
