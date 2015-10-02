@@ -2,6 +2,8 @@ package navdata
 
 // import "github.com/ArchieT/trmstac/stadata"
 
+const PredkoscMetersPerSec = 4
+
 //from OpenStreetMap Bicycle(GraphHopper)
 var FTStaMeters = [27][27]int{
 	{0, 1050, 349, 370,1500,3300,2700,2800,5100,2300,5400,4800, 928, 302,1800,8800,2000,3100,2400, 809,2500,4600,7600,2700,3100,3200,3700,},
@@ -32,11 +34,34 @@ var FTStaMeters = [27][27]int{
 	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2500,},
 }
 
+type FTStaEntry struct {
+	FromSta,ToSta int
+}
+
+func (a *FTStaEntry) DistMeters() int {
+	return FTStaMeters[a.FromSta-1][a.ToSta-1]
+}
+
+func (a *FTStaEntry) TimeSec() int {
+	return a.DistMeters()/PredkoscMetersPerSec
+}
+
+type FTStaEntrInterface interface {
+	TimeSec() int
+}
+
+var FTStaEntries [27][27]FTStaEntry
+
 func init() {
 	for i:=0;i<27;i++ {
 		FTStaMeters[i][i] = 0
 		for j:=i;j<27;j++ {
 			FTStaMeters[j][i] = FTStaMeters[i][j]
+		}
+	}
+	for i:=1;i<=27;i++ {
+		for j:=1;j<=27;i++ {
+			FTStaEntries[i-1][j-1] = FTStaEntry{i,j}
 		}
 	}
 }
