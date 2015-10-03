@@ -20,8 +20,9 @@ func Download() Shot {
 	response,err:=http.Get(url)
 	if err!=nil {
 		var zlalista [27]sta
-		for o:=0;o<27;o++ {
-			zlalista[o]=sta{-1,-1,-1}
+		var o uint8
+		for o=0;o<27;o++ {
+			zlalista[o]=sta{0,0,0}
 		}
 		return Shot{zlalista,cza,err}
 	}

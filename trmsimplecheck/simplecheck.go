@@ -25,16 +25,18 @@ func main(){
 		for i:=b.Wol;i>0;i-- {
 			buffer.WriteString("▒")
 		}
+		row := int(b.Row)
+		wol := int(b.Wol)
 		buffer.WriteString(" ")
-		buffer.WriteString(strconv.Itoa(b.Row))
+		buffer.WriteString(strconv.Itoa(row))
 		buffer.WriteString("/")
-		buffer.WriteString(strconv.Itoa(b.Row+b.Wol))
+		buffer.WriteString(strconv.Itoa(row+wol))
 		buffer.WriteString(" (")
-		buffer.WriteString(strconv.Itoa(b.Wol))
+		buffer.WriteString(strconv.Itoa(wol))
 		buffer.WriteString(" empty)")
 		fmt.Println(buffer.String())
-		sumrow+=b.Row
-		sumwol+=b.Wol
+		sumrow+=row
+		sumwol+=wol
 	}
 	fmt.Println("----")
 	var buffer bytes.Buffer
