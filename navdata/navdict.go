@@ -5,7 +5,7 @@ package navdata
 const PredkoscMetersPerSec = 4
 
 //from OpenStreetMap Bicycle(GraphHopper)
-var FTStaMeters = [27][27]int{
+var FTStaMeters = [27][27]uint16{
 	{0, 1050, 349, 370,1500,3300,2700,2800,5100,2300,5400,4800, 928, 302,1800,8800,2000,3100,2400, 809,2500,4600,7600,2700,3100,3200,3700,},
 	{0,0,1500,1300,1500,4000,3400,3900,4900,3500,4600,4000, 460, 821,2200,8400,1300,2300,1800,1300,3000,3900,6800,2900,2800,2400,3500,},
 	{0,0,0,386,1800,3100,2400,2500,4800,2000,5900,5200,1200, 610,1600,8500,2300,3600,2600, 453,2300,5100,8000,2500,3400,3700,4000,},
@@ -35,31 +35,32 @@ var FTStaMeters = [27][27]int{
 }
 
 type FTStaEntry struct {
-	FromSta,ToSta int
+	FromSta,ToSta uint8
 }
 
-func (a *FTStaEntry) DistMeters() int {
+func (a *FTStaEntry) DistMeters() uint16 {
 	return FTStaMeters[a.FromSta-1][a.ToSta-1]
 }
 
-func (a *FTStaEntry) TimeSec() int {
+func (a *FTStaEntry) TimeSec() uint16 {
 	return a.DistMeters()/PredkoscMetersPerSec
 }
 
 type FTStaEntrInterface interface {
-	TimeSec() int
+	TimeSec() uint16
 }
 
 var FTStaEntries [27][27]FTStaEntry
 
 func init() {
-	for i:=0;i<27;i++ {
+	var i uint8
+	for i=0;i<27;i++ {
 		FTStaMeters[i][i] = 0
 		for j:=i;j<27;j++ {
 			FTStaMeters[j][i] = FTStaMeters[i][j]
 		}
 	}
-	for i:=1;i<=27;i++ {
+	for i=1;i<=27;i++ {
 		for j:=1;j<=27;i++ {
 			FTStaEntries[i-1][j-1] = FTStaEntry{i,j}
 		}
