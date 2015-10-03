@@ -6,7 +6,7 @@ import (
 	"sync"
 )
 
-type sta struct {Num,Row,Wol int}
+type sta struct {Num,Row,Wol uint8}
 
 //rall := regexp.MustCompile(`Stacja nr\s \d+\s+</br>\s+Dostępne rowery: \d+\s+</br>\s+Wolne sloty \d+ ', \d+\.\d+ , \d+\.\d+ , 'http:`)
 var rall = regexp.MustCompile(`Stacja nr\s \d+\s+</br>\s+Dostępne rowery: \d+\s+</br>\s+Wolne sloty \d+ ',`)
@@ -40,7 +40,7 @@ func pars(skad *string) ([27]sta, error) {
 			osta, erronintsta := strconv.Atoi(resintsta)
 			orow, erronintrow := strconv.Atoi(resintrow)
 			owol, erronintwol := strconv.Atoi(resintwol)
-			nsta := sta{osta,orow,owol}
+			nsta := sta{uint8(osta),uint8(orow),uint8(owol)}
 			lista[osta-1] = nsta
 			switch {
 			case erronintsta!=nil:

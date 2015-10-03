@@ -2,15 +2,15 @@ package stadata
 
 
 type Vertex struct {
-	Lat, Long float64
+	Lat, Long float32
 }
 
 
 type sdata struct {
-	Num int
+	Num uint8
 	Stastr, Staaddrloc string
 	Staloc Vertex
-	Rowslot int
+	Rowslot uint8
 }
 
 var List = [27]sdata{
