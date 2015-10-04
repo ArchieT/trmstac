@@ -6,7 +6,7 @@ import (
 	"sync"
 )
 
-type sta struct {Num,Row,Wol uint8}
+type Sta struct {Num,Row,Wol uint8}
 
 //rall := regexp.MustCompile(`Stacja nr\s \d+\s+</br>\s+Dostępne rowery: \d+\s+</br>\s+Wolne sloty \d+ ', \d+\.\d+ , \d+\.\d+ , 'http:`)
 var rall = regexp.MustCompile(`Stacja nr\s \d+\s+</br>\s+Dostępne rowery: \d+\s+</br>\s+Wolne sloty \d+ ',`)
@@ -19,8 +19,8 @@ var rwol = regexp.MustCompile(`</br>\s+Wolne sloty \d+ ',`)
 var rint = regexp.MustCompile(`\d+`)
 //rflo := regexp.MustCompile(`\d+\.\d+`)
 
-func pars(skad *string) ([27]sta, error) {
-	var lista [27]sta
+func pars(skad *string) (*[27]Sta, error) {
+	var lista [27]Sta
 	var errnasz error
 	resall := rall.FindAllString(*skad,-1)
 	var wg sync.WaitGroup
@@ -40,7 +40,7 @@ func pars(skad *string) ([27]sta, error) {
 			osta, erronintsta := strconv.Atoi(resintsta)
 			orow, erronintrow := strconv.Atoi(resintrow)
 			owol, erronintwol := strconv.Atoi(resintwol)
-			nsta := sta{uint8(osta),uint8(orow),uint8(owol)}
+			nsta := Sta{uint8(osta),uint8(orow),uint8(owol)}
 			lista[osta-1] = nsta
 			switch {
 			case erronintsta!=nil:
@@ -54,5 +54,5 @@ func pars(skad *string) ([27]sta, error) {
 
 	}
 	wg.Wait()
-	return lista, errnasz
+	return &lista, errnasz
 }

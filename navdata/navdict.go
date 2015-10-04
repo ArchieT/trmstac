@@ -53,7 +53,7 @@ type FTStaEntrInterface interface {
 var FTStaEntries [27][27]FTStaEntry
 
 func init() {
-	var i uint8
+	var i,j uint8
 	for i=0;i<27;i++ {
 		FTStaMeters[i][i] = 0
 		for j:=i;j<27;j++ {
@@ -61,7 +61,7 @@ func init() {
 		}
 	}
 	for i=1;i<=27;i++ {
-		for j:=1;j<=27;i++ {
+		for j=1;j<=27;i++ {
 			FTStaEntries[i-1][j-1] = FTStaEntry{i,j}
 		}
 	}
