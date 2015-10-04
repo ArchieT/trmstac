@@ -9,11 +9,11 @@ import (
 )
 
 func main(){
-	a := get.Download()
+	tabl, cza, _ := get.Download()
 //	fmt.Println(a)
-	fmt.Println("Liczba rowerów na stacjach TRM: ", a.Cza)
+	fmt.Println("Liczba rowerów na stacjach TRM: ", cza)
 	var sumrow,sumwol int
-	for ib,b := range a.Stali {
+	for ib,b := range *tabl {
 		var buffer bytes.Buffer
 		buffer.WriteString(" ")
 		buffer.WriteString(stadata.List[ib].Stastr)
@@ -38,7 +38,7 @@ func main(){
 		sumrow+=row
 		sumwol+=wol
 	}
-	fmt.Println("----")
+	fmt.Println("—————————————————————————————————————————————————————————————————————————————————————————————————————")
 	var buffer bytes.Buffer
 	buffer.WriteString(" SUMA   | ")
 	lproc:=(80*sumrow)/(sumrow+sumwol)
@@ -55,9 +55,9 @@ func main(){
 	buffer.WriteString(" (")
 	buffer.WriteString(strconv.Itoa(sumwol))
 	buffer.WriteString(") — AVG ")
-	buffer.WriteString(strconv.Itoa(sumrow/len(a.Stali)))
+	buffer.WriteString(strconv.Itoa(sumrow/len(tabl)))
 	buffer.WriteString(" (")
-	buffer.WriteString(strconv.Itoa(sumwol/len(a.Stali)))
+	buffer.WriteString(strconv.Itoa(sumwol/len(tabl)))
 	buffer.WriteString(") ")
 	fmt.Println(buffer.String())
 	fmt.Println(" ")

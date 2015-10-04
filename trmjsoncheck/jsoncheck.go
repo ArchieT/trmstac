@@ -7,11 +7,18 @@ import (
 	"encoding/json"
 )
 
+type blad struct {
+	err error
+}
+
 func main(){
-	a := get.Download()
-	b,err := json.Marshal(a)
+	tabl, cza, err := get.Download()
+	data := make(map[string]interface{})
+	data["sta"] = *tabl
+	data["cza"] = cza
+	b,err := json.Marshal(data)
 	if err!=nil {
-		fmt.Println("damn")
+		fmt.Println("error",err)
 	}
 	fmt.Println(string(b))
 }
