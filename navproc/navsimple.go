@@ -31,3 +31,24 @@ func (g *FTStaEntrInterfaceMatrix) ShortestPath(w FTStaWFunc, from,to uint8) uin
 	}
 	return d[to]
 }
+
+func TimeSec(i *FTStaEntrInterface) uint16 {
+	return (*i).TimeSec()
+}
+
+func Oplata(i *FTStaEntrInterface) uint16 {
+	if (*i).TimeSec() < 20 {
+		return uint16(0)
+	} else if (*i).TimeSec() <60 {
+		return uint16(1)
+	} else if (*i).TimeSec() < 120 {
+		return uint16(4)
+	} else if (*i).TimeSec() < 180 {
+		return uint16(9)
+	} else if (*i).TimeSec() <240 {
+		return uint16(16)
+	} else if (*i).TimeSec() > 239 {
+		return uint16((9+(((*i).TimeSec()-179)/60)+1)*7)
+	}
+	return uint16(65535)
+}
