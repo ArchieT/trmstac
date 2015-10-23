@@ -1,7 +1,7 @@
 package navdata
 
 // import "github.com/ArchieT/trmstac/stadata"
-//import "github.com/ArchieT/trmstac/navproc"
+import "github.com/ArchieT/trmstac/navproc"
 
 const PredkoscMetersPerSec = 4
 
@@ -51,7 +51,7 @@ type FTStaEntrInterface interface {
 	TimeSec() uint16
 }
 
-var FTStaEntries [27][27]FTStaEntry
+var FTStaEntries [27][27]navproc.FTStaEntrInterface
 
 func init() {
 	var i,j uint8
