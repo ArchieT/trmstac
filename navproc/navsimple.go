@@ -4,11 +4,11 @@ type FTStaEntrInterface interface {
 	TimeSec() uint16
 }
 
-type FTStaWFunc func(*FTStaEntrInterface) uint16
+type FTStaWFunc func(FTStaEntrInterface) uint16
 
-type FTStaEntrInterfaceMatrix [27][27]FTStaEntrInterface
+//type FTStaEntrInterfaceMatrix [27][27]FTStaEntrInterface
 
-func (g *FTStaEntrInterfaceMatrix) ShortestPath(w FTStaWFunc, from,to uint8) (uint16,[]uint8) {
+func ShortestPath(g [27][27]FTStaEntrInterface, w FTStaWFunc, from,to uint8) (uint16,[]uint8) {
 	var d [27]uint16
 	var p [27]uint8
 	q := make([]uint8, 27)
@@ -22,8 +22,8 @@ func (g *FTStaEntrInterfaceMatrix) ShortestPath(w FTStaWFunc, from,to uint8) (ui
 	for len(q)>0 {
 		u,q := q[0],q[:1]
 		for v=0;v<27;v++ {
-			if d[v] > d[u] + w(&(g[u][v])) {
-				d[v] = d[u] + w(&(g[u][v]))
+			if d[v] > d[u] + w((g[u][v])) {
+				d[v] = d[u] + w((g[u][v]))
 				p[v] = u
 				q = append(q,v)
 			}
@@ -45,23 +45,23 @@ func (g *FTStaEntrInterfaceMatrix) ShortestPath(w FTStaWFunc, from,to uint8) (ui
 	return d[to],poprzednicy
 }
 
-func TimeSec(i *FTStaEntrInterface) uint16 {
-	return (*i).TimeSec()
+func TimeSec(i FTStaEntrInterface) uint16 {
+	return i.TimeSec()
 }
 
-func Oplata(i *FTStaEntrInterface) uint16 {
-	if (*i).TimeSec() < 20 {
+func Oplata(i FTStaEntrInterface) uint16 {
+	if i.TimeSec() < 20 {
 		return uint16(0)
-	} else if (*i).TimeSec() <60 {
+	} else if i.TimeSec() <60 {
 		return uint16(1)
-	} else if (*i).TimeSec() < 120 {
+	} else if i.TimeSec() < 120 {
 		return uint16(4)
-	} else if (*i).TimeSec() < 180 {
+	} else if i.TimeSec() < 180 {
 		return uint16(9)
-	} else if (*i).TimeSec() <240 {
+	} else if i.TimeSec() <240 {
 		return uint16(16)
-	} else if (*i).TimeSec() > 239 {
-		return uint16((9+(((*i).TimeSec()-179)/60)+1)*7)
+	} else if i.TimeSec() > 239 {
+		return uint16((9+((i.TimeSec()-179)/60)+1)*7)
 	}
 	return uint16(65535)
 }

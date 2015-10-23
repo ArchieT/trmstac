@@ -1,6 +1,7 @@
 package navdata
 
 // import "github.com/ArchieT/trmstac/stadata"
+//import "github.com/ArchieT/trmstac/navproc"
 
 const PredkoscMetersPerSec = 4
 
@@ -38,11 +39,11 @@ type FTStaEntry struct {
 	FromSta,ToSta uint8
 }
 
-func (a *FTStaEntry) DistMeters() uint16 {
+func (a FTStaEntry) DistMeters() uint16 {
 	return FTStaMeters[a.FromSta-1][a.ToSta-1]
 }
 
-func (a *FTStaEntry) TimeSec() uint16 {
+func (a FTStaEntry) TimeSec() uint16 {
 	return a.DistMeters()/PredkoscMetersPerSec
 }
 
