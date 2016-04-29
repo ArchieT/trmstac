@@ -1,7 +1,7 @@
 package get
 
 import (
-	"github.com/ArchieT/3manchess/stadata"
+	"github.com/ArchieT/trmstac/stadata"
 	"regexp"
 	"strconv"
 	"sync"
