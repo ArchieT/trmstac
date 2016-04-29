@@ -1,17 +1,18 @@
 package get
 
 import (
+	"bytes"
+	"github.com/ArchieT/trmstac/stadata"
 	"net/http"
 	"time"
-	"bytes"
 )
 
-func Download() (*[27]Sta,time.Time,error) {
+func Download() (*[stadata.ILOSCSTA]Sta, time.Time, error) {
 	url := "http://trm24.pl/panel-trm/maps.jsp"
 	cza := time.Now()
-	response,err:=http.Get(url)
-	if err!=nil {
-		return nil,cza,err
+	response, err := http.Get(url)
+	if err != nil {
+		return nil, cza, err
 	}
 	defer response.Body.Close()
 
@@ -21,6 +22,6 @@ func Download() (*[27]Sta,time.Time,error) {
 	parsed, parserr := pars(&pagestr)
 	//if parserr!=nil {
 	//star := Shot{parsed,cza,parserr}
-//	star.giveme()
-	return parsed,cza,parserr
+	//	star.giveme()
+	return parsed, cza, parserr
 }
