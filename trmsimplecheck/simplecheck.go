@@ -6,21 +6,37 @@ import (
 	"github.com/ArchieT/trmstac/get"
 	//"github.com/ArchieT/trmstac/stadata"
 	"strconv"
+	"strings"
+	"unicode/utf8"
 )
+
+func slen(x string) int { return utf8.RuneCountInString(x) }
 
 func main() {
 	down, _ := get.Download()
 	cza := down.Time
 	tabl, _ := down.ParseSta()
 	info, _ := down.ParseInfoIntoAddrList()
-	fmt.Println(info)
 	//	fmt.Println(a)
 	fmt.Println("Liczba rowerów na stacjach TRM: ", cza)
 	var sumrow, sumwol int
+	var maxlenaddr int
+	for _, infb := range info {
+		if slen(infb) > maxlenaddr {
+			maxlenaddr = slen(infb)
+		}
+	}
+	maxlenaddr = maxlenaddr
 	for ib, b := range tabl {
 		var buffer bytes.Buffer
 		buffer.WriteString(" ")
-		buffer.WriteString(info[ib])
+		spacjanumeru := ""
+		if ib < 9 {
+			spacjanumeru = " "
+		}
+		buffer.WriteString(strconv.Itoa(ib+1) + ". " + spacjanumeru + info[ib])
+		olen := slen(info[ib])
+		buffer.WriteString(strings.Repeat(" ", maxlenaddr-olen))
 		buffer.WriteString(" | ")
 		for i := b.Row; i > 0; i-- {
 			//fmt.Print("█")

@@ -2,7 +2,6 @@ package get
 
 import (
 	"errors"
-	"fmt"
 	"regexp"
 	"strconv"
 )
@@ -44,38 +43,31 @@ func (d *Downloaded) ParseData() (lista []StaData, err error) {
 
 func parsdata(skad *string) (lista []StaData, err error) {
 	resall := rdall.FindAllStringSubmatch(*skad, -1)
-	fmt.Println(resall)
 	lista = make([]StaData, 0, 30)
 	for j := range resall {
 		var nasz StaData
 		ri := make(map[string]int, 3)
-		fmt.Println(rdall.SubexpNames())
 		for i, name := range rdall.SubexpNames() {
 			if i == 0 {
 				continue
 			}
 			ri[name] = i
 		}
-		fmt.Println(ri)
 		gmarkers, gerr := strconv.Atoi(resall[j][ri["gmarkersindex"]])
 		stacnum, serr := strconv.Atoi(resall[j][ri["stacnumber"]])
 		nasz.Num = uint8(stacnum)
 		nasz.Addr = resall[j][ri["address"]]
-		fmt.Println(nasz)
 		lista = append(lista, nasz)
 		if gerr != nil {
 			err = gerr
-			fmt.Println("g", err)
 			return
 		}
 		if serr != nil {
 			err = serr
-			fmt.Println("s", err)
 			return
 		}
 		if gmarkers+1 != stacnum {
 			err = errors.New("gmarkers = " + strconv.Itoa(gmarkers) + " and stacnum = " + strconv.Itoa(stacnum) + " are not the same")
-			fmt.Println("neq", err)
 			return
 		}
 	}
