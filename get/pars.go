@@ -1,7 +1,6 @@
 package get
 
 import (
-	"github.com/ArchieT/trmstac/stadata"
 	"regexp"
 	"strconv"
 	"sync"
@@ -23,7 +22,7 @@ var rint = regexp.MustCompile(`\d+`)
 //rflo := regexp.MustCompile(`\d+\.\d+`)
 
 func pars(skad *string) (lista []Sta, err error) {
-	lista = make([]Sta, 0, stadata.ILOSCSTA)
+	lista = make([]Sta, 0, 30)
 	resall := rall.FindAllString(*skad, -1)
 	var wg sync.WaitGroup
 	for j := range resall {
