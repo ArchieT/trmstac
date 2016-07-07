@@ -2,26 +2,23 @@ package get
 
 import (
 	"bytes"
-	"github.com/ArchieT/trmstac/stadata"
 	"net/http"
 	"time"
 )
 
-func Download() (*[stadata.ILOSCSTA]Sta, time.Time, error) {
+func Download() (d Downloaded, err error) {
 	url := "http://trm24.pl/panel-trm/maps.jsp"
-	cza := time.Now()
+	d.Time = time.Now()
 	response, err := http.Get(url)
-	if err != nil {
-		return nil, cza, err
+	if err == nil {
+		defer response.Body.Close()
+		buf := new(bytes.Buffer)
+		buf.ReadFrom(response.Body)
+		d.Content = buf.String()
 	}
-	defer response.Body.Close()
+	return
+}
 
-	buf := new(bytes.Buffer)
-	buf.ReadFrom(response.Body)
-	pagestr := buf.String()
-	parsed, parserr := pars(&pagestr)
-	//if parserr!=nil {
-	//star := Shot{parsed,cza,parserr}
-	//	star.giveme()
-	return parsed, cza, parserr
+func (d *Downloaded) ParseSta() ([]Sta, error) {
+	return pars(&(d.Content))
 }

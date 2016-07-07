@@ -22,9 +22,8 @@ var rint = regexp.MustCompile(`\d+`)
 
 //rflo := regexp.MustCompile(`\d+\.\d+`)
 
-func pars(skad *string) (*[stadata.ILOSCSTA]Sta, error) {
-	var lista [stadata.ILOSCSTA]Sta
-	var errnasz error
+func pars(skad *string) (lista []Sta, err error) {
+	lista = make([]Sta, 0, stadata.ILOSCSTA)
 	resall := rall.FindAllString(*skad, -1)
 	var wg sync.WaitGroup
 	for j := range resall {
@@ -44,18 +43,18 @@ func pars(skad *string) (*[stadata.ILOSCSTA]Sta, error) {
 			orow, erronintrow := strconv.Atoi(resintrow)
 			owol, erronintwol := strconv.Atoi(resintwol)
 			nsta := Sta{uint8(osta), uint8(orow), uint8(owol)}
-			lista[osta-1] = nsta
+			lista = append(lista, nsta)
 			switch {
 			case erronintsta != nil:
-				errnasz = erronintsta
+				err = erronintsta
 			case erronintrow != nil:
-				errnasz = erronintrow
+				err = erronintrow
 			case erronintwol != nil:
-				errnasz = erronintwol
+				err = erronintwol
 			}
 		}(&resall[j])
 
 	}
 	wg.Wait()
-	return &lista, errnasz
+	return lista, err
 }
