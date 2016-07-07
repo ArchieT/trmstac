@@ -12,7 +12,7 @@ type StaData struct {
 	Addr string
 }
 
-var rdall = regexp.MustCompile(`<a href="javascript:google\.maps\.event\.trigger\(gmarkers\[(?P<gmarkersindex>\d{1,2})\],'click'\);"><b>Stacja nr\. (?P<stacnumber>\d{1,2})\. (?P<address>[^\a\f\t\n\r\v\<\>]{5,}?)</b></a> ?<br>`)
+var rdall = regexp.MustCompile(`<a href="javascript:google\.maps\.event\.trigger\(gmarkers\[(?P<gmarkersindex>\d{1,2})\],'click'\);"><b> ? ? ? ?Stacja nr\. (?P<stacnumber>\d{1,2})\. (?P<address>[^\a\f\t\n\r\v\<\>]{5,}?) {0,5}?</b> ? ? ? ?</a> ? ? ? ?<[Bb]r>`)
 
 func (d *Downloaded) ParseInfoIntoAddrList() (lista []string, err error) {
 	par, err := d.ParseData()
