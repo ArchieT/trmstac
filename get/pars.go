@@ -8,42 +8,79 @@ import (
 
 type Sta struct{ Num, Row, Wol uint8 }
 
+type Location struct{ Lat, Lon float64 }
+
+type LocSta struct {
+	Num uint8
+	Location
+}
+
 //rall := regexp.MustCompile(`Stacja nr\s \d+\s+</br>\s+Dostępne rowery: \d+\s+</br>\s+Wolne sloty \d+ ', \d+\.\d+ , \d+\.\d+ , 'http:`)
-var rall = regexp.MustCompile(`Stacja nr\s \d+\s+</br>\s+Dostępne rowery: \d+\s+</br>\s+Wolne sloty \d+ ',`)
-var rsta = regexp.MustCompile(`Stacja nr\s \d+\s+</br>\s+Dostępne rowery:`)
-var rrow = regexp.MustCompile(`</br>\s+Dostępne rowery: \d+\s+</br>\s+Wolne sloty`)
-var rwol = regexp.MustCompile(`</br>\s+Wolne sloty \d+ ',`)
+var rall = regexp.MustCompile(`Stacja nr ? (?P<nrsta>\d{1,2}) ? ? ? ? ?</br> ? ? ? ? ? ?Dostępne rowery: (?P<dostrow>\d{1,2}) ? ? ? ?</br> ? ? ? ?Wolne sloty (?P<wolrow>\d{1,2}) ', (?P<lat>\d+\.\d+) , (?P<lon>\d+\.\d+) , 'http`)
 
-//rloc := regexp.MustCompile(`', \d+\.\d+ , \d+\.\d+ , 'http:`)
-//rlat := regexp.MustCompile(`', \d+\.\d+ , `)
-//rlon := regexp.MustCompile(` , \d+\.\d+ , 'http:`)
-var rint = regexp.MustCompile(`\d+`)
+var raliw = make(map[string]int, 30)
 
-//rflo := regexp.MustCompile(`\d+\.\d+`)
+var NRSTA, DOSTROW, WOLROW, LATIND, LONIND int
 
-func pars(skad *string) (lista []Sta, err error) {
+func init() {
+	for i, name := range rall.SubexpNames() {
+		if i == 0 {
+			continue
+		}
+		raliw[name] = i
+	}
+	NRSTA = raliw["nrsta"]
+	DOSTROW = raliw["dostrow"]
+	WOLROW = raliw["wolrow"]
+	LATIND = raliw["latind"]
+	LONIND = raliw["lonind"]
+}
+
+func pars(skad *string, withloc bool) (lista []Sta, locs []LocSta, err error) {
 	lista = make([]Sta, 0, 30)
-	resall := rall.FindAllString(*skad, -1)
+	if withloc {
+		locs = make([]LocSta, 0, 30)
+	}
+	resall := rall.FindAllStringSubmatch(*skad, -1)
 	var wg sync.WaitGroup
+	czekamy := make([]chan bool, len(resall)+1)
+	for j := range resall {
+		czekamy[j] = make(chan bool)
+	}
+	czekamy[len(resall)] = make(chan bool)
+	go func() { czekamy[0] <- true }()
 	for j := range resall {
 		wg.Add(1)
-		go func(frag *string) {
+		go func() { <-czekamy[len(resall)] }()
+		go func(j int) {
 			defer wg.Done()
-			ressta := rsta.FindString(*frag)
-			resrow := rrow.FindString(*frag)
-			reswol := rwol.FindString(*frag)
-			//resloc := rloc.FindString(frag)
-			//reslat := rlat.FindString(resloc)
-			//reslon := rlon.FindString(resloc)
-			resintsta := rint.FindString(ressta)
-			resintrow := rint.FindString(resrow)
-			resintwol := rint.FindString(reswol)
-			osta, erronintsta := strconv.Atoi(resintsta)
-			orow, erronintrow := strconv.Atoi(resintrow)
-			owol, erronintwol := strconv.Atoi(resintwol)
-			nsta := Sta{uint8(osta), uint8(orow), uint8(owol)}
+			osta, erronintsta := strconv.Atoi(resall[j][NRSTA])
+			orow, erronintrow := strconv.Atoi(resall[j][DOSTROW])
+			owol, erronintwol := strconv.Atoi(resall[j][WOLROW])
+			uosta := uint8(osta)
+			nsta := Sta{uosta, uint8(orow), uint8(owol)}
+			if withloc {
+				var nloc LocSta
+				nloc.Num = uosta
+				var erronflolat, erronflolon error
+				nloc.Location.Lat, erronflolat = strconv.ParseFloat(resall[j][LATIND], 64)
+				nloc.Location.Lon, erronflolon = strconv.ParseFloat(resall[j][LONIND], 64)
+				<-czekamy[uosta-1]
+				locs = append(locs, nloc)
+				switch {
+				case err != nil:
+				case erronflolat != nil:
+					err = erronflolat
+				case erronflolon != nil:
+					err = erronflolon
+				}
+			}
+			if !withloc {
+				<-czekamy[uosta-1]
+			}
 			lista = append(lista, nsta)
 			switch {
+			case err != nil:
 			case erronintsta != nil:
 				err = erronintsta
 			case erronintrow != nil:
@@ -51,9 +88,10 @@ func pars(skad *string) (lista []Sta, err error) {
 			case erronintwol != nil:
 				err = erronintwol
 			}
-		}(&resall[j])
+			czekamy[uosta] <- true
+		}(j)
 
 	}
 	wg.Wait()
-	return lista, err
+	return lista, locs, err
 }

@@ -19,6 +19,9 @@ func Download() (d Downloaded, err error) {
 	return
 }
 
-func (d *Downloaded) ParseSta() ([]Sta, error) {
-	return pars(&(d.Content))
+func (d *Downloaded) ParseSta() (staout []Sta, err error) {
+	staout, _, err = pars(&(d.Content), false)
+	return
 }
+
+func (d *Downloaded) ParseStaWithLoc() ([]Sta, []LocSta, error) { return pars(&(d.Content), true) }
