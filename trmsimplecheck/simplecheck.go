@@ -4,19 +4,23 @@ import (
 	"bytes"
 	"fmt"
 	"github.com/ArchieT/trmstac/get"
-	"github.com/ArchieT/trmstac/stadata"
+	//"github.com/ArchieT/trmstac/stadata"
 	"strconv"
 )
 
 func main() {
-	tabl, cza, _ := get.Download()
+	down, _ := get.Download()
+	cza := down.Time
+	tabl, _ := down.ParseSta()
+	info, _ := down.ParseInfoIntoAddrList()
+	fmt.Println(info)
 	//	fmt.Println(a)
 	fmt.Println("Liczba rowerów na stacjach TRM: ", cza)
 	var sumrow, sumwol int
-	for ib, b := range *tabl {
+	for ib, b := range tabl {
 		var buffer bytes.Buffer
 		buffer.WriteString(" ")
-		buffer.WriteString(stadata.List[ib].Stastr)
+		buffer.WriteString(info[ib])
 		buffer.WriteString(" | ")
 		for i := b.Row; i > 0; i-- {
 			//fmt.Print("█")
