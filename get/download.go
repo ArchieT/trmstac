@@ -41,6 +41,11 @@ type AllSta struct {
 	StaData `json:"info" bson:"info"`
 }
 
+type Shot struct {
+	List      []AllSta `json:"list" bson:"list"`
+	time.Time `json:"timestamp" bson:"timestamp"`
+}
+
 func (d *Downloaded) ParseAll() (uz UnzipStaLs, slocerr, dataerr error) {
 	uz.StaL, uz.LocStaL, slocerr = d.ParseStaWithLoc()
 	uz.StaDataL, dataerr = d.ParseData()
