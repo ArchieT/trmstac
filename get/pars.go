@@ -39,8 +39,8 @@ func init() {
 	NRSTA = raliw["nrsta"]
 	DOSTROW = raliw["dostrow"]
 	WOLROW = raliw["wolrow"]
-	LATIND = raliw["latind"]
-	LONIND = raliw["lonind"]
+	LATIND = raliw["lat"]
+	LONIND = raliw["lon"]
 }
 
 func pars(skad *string, withloc bool) (lista []Sta, locs []LocSta, err error) {
