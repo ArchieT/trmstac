@@ -6,13 +6,20 @@ import (
 	"sync"
 )
 
-type Sta struct{ Num, Row, Wol uint8 }
+type Sta struct {
+	Num uint8 `json:"stanum" bson:"stanum"`
+	Row uint8 `json:"dostrow" bson:"dostrow"`
+	Wol uint8 `json:"wolrow" bson:"wolrow"`
+}
 
-type Location struct{ Lat, Lon float64 }
+type Location struct {
+	Lat float64 `json:"lat" bson:"lat"`
+	Lon float64 `json:"lon" bson:"lon"`
+}
 
 type LocSta struct {
-	Num uint8
-	Location
+	Num      uint8 `json:"num" bson:"num"`
+	Location `json:"location" bson:"location"`
 }
 
 //rall := regexp.MustCompile(`Stacja nr\s \d+\s+</br>\s+Dostępne rowery: \d+\s+</br>\s+Wolne sloty \d+ ', \d+\.\d+ , \d+\.\d+ , 'http:`)

@@ -36,9 +36,9 @@ type UnzipStaLs struct {
 }
 
 type AllSta struct {
-	Sta
-	LocSta
-	StaData
+	Sta     `json:"sta" bson:"sta"`
+	LocSta  `json:"loc" bson:"loc"`
+	StaData `json:"info" bson:"info"`
 }
 
 func (d *Downloaded) ParseAll() (uz UnzipStaLs, slocerr, dataerr error) {
