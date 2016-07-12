@@ -13,6 +13,12 @@ func ParseAll(s *string) (uz get.UnzipStaLs, oneerr error) {
 	return
 }
 
-func ZipUzS(uz *(get.UnzipStaLs)) (as []get.AllSta, err error) {
-	return uz.Zip()
+func ZipUzS(uz *(get.UnzipStaLs)) (as []get.AllSta, err error) { return uz.Zip() }
+
+const THE_URL = get.THE_URL
+
+func GoHTTPDownloadStringFromURL(url string) (s string, err error) {
+	return get.DownloadStringFromURL(url)
 }
+
+func GoHTTPDownloadString() (s string, err error) { return get.DownloadString() }
