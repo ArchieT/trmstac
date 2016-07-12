@@ -2,23 +2,35 @@ package mobile
 
 import "github.com/ArchieT/trmstac/get"
 
-func ParseAll(s *string) (uz get.UnzipStaLs, oneerr error) {
+var UnzipStaLs get.UnzipStaLs
+
+func GiveUnzipStaLs() get.UnzipStaLs { return UnzipStaLs }
+
+var AllSta []get.AllSta
+
+func GiveAllSta() []get.AllSta { return AllSta }
+
+var WewnString string
+
+func GiveWewnString() string  { return WewnString }
+func TakeWewnString(s string) { WewnString = s }
+
+func ParseAll() error {
 	var jeden, drugi error
-	uz, jeden, drugi = get.ParseAll(s)
+	UnzipStaLs, jeden, drugi = get.ParseAll(&WewnString)
 	if jeden != nil {
-		oneerr = jeden
-	} else {
-		oneerr = drugi
+		return jeden
 	}
-	return
+	return drugi
 }
 
-func ZipUzS(uz *(get.UnzipStaLs)) (as []get.AllSta, err error) { return uz.Zip() }
+func ZipUzS() (err error) { AllSta, err = UnzipStaLs.Zip(); return }
 
 const THE_URL = get.THE_URL
 
-func GoHTTPDownloadStringFromURL(url string) (s string, err error) {
-	return get.DownloadStringFromURL(url)
+func GoHTTPDownloadStringFromURL(url string) (err error) {
+	WewnString, err = get.DownloadStringFromURL(url)
+	return
 }
 
-func GoHTTPDownloadString() (s string, err error) { return get.DownloadString() }
+func GoHTTPDownloadString() (err error) { WewnString, err = get.DownloadString(); return }
