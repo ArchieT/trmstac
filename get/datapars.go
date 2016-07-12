@@ -14,10 +14,17 @@ type StaData struct {
 var rdall = regexp.MustCompile(`<a href="javascript:google\.maps\.event\.trigger\(gmarkers\[(?P<gmarkersindex>\d{1,2})\],'click'\);"><b> ? ? ? ?Stacja nr\. (?P<stacnumber>\d{1,2})\. (?P<address>[^\a\f\t\n\r\v\<\>]{5,}?) {0,5}?</b> ? ? ? ?</a> ? ? ? ?<[Bb]r>`)
 
 func (d *Downloaded) ParseInfoIntoAddrList() (lista []string, err error) {
-	par, err := d.ParseData()
+	return ParseInfoIntoAddrList(&(d.Content))
+}
+func ParseInfoIntoAddrList(s *string) (lista []string, err error) {
+	par, err := ParseData(s)
 	if err != nil {
 		return
 	}
+	return ParseStaDataIntoAddrList(par)
+}
+
+func ParseStaDataIntoAddrList(par []StaData) (lista []string, err error) {
 	lista = make([]string, 0, len(par))
 	var ii uint8
 	for i := 1; i <= len(par); i++ {
@@ -38,10 +45,10 @@ func (d *Downloaded) ParseInfoIntoAddrList() (lista []string, err error) {
 }
 
 func (d *Downloaded) ParseData() (lista []StaData, err error) {
-	return parsdata(&(d.Content))
+	return ParseData(&(d.Content))
 }
 
-func parsdata(skad *string) (lista []StaData, err error) {
+func ParseData(skad *string) (lista []StaData, err error) {
 	resall := rdall.FindAllStringSubmatch(*skad, -1)
 	lista = make([]StaData, 0, 30)
 	for j := range resall {

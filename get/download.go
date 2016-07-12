@@ -9,8 +9,10 @@ import (
 	"time"
 )
 
-func Download() (d Downloaded, err error) {
-	url := "http://trm24.pl/panel-trm/maps.jsp"
+const THE_URL = "http://trm24.pl/panel-trm/maps.jsp"
+
+func Download() (d Downloaded, err error) { return DownloadFromURL(THE_URL) }
+func DownloadFromURL(url string) (d Downloaded, err error) {
 	d.Time = time.Now()
 	response, err := http.Get(url)
 	if err == nil {
@@ -22,12 +24,15 @@ func Download() (d Downloaded, err error) {
 	return
 }
 
-func (d *Downloaded) ParseSta() (staout []Sta, err error) {
-	staout, _, err = pars(&(d.Content), false)
+func ParseSta(s *string) (staout []Sta, err error) {
+	staout, _, err = pars(s, false)
 	return
 }
 
-func (d *Downloaded) ParseStaWithLoc() ([]Sta, []LocSta, error) { return pars(&(d.Content), true) }
+func (d *Downloaded) ParseSta() (staout []Sta, err error) { return ParseSta(&(d.Content)) }
+
+func ParseStaWithLoc(s *string) ([]Sta, []LocSta, error)        { return pars(s, true) }
+func (d *Downloaded) ParseStaWithLoc() ([]Sta, []LocSta, error) { return ParseStaWithLoc(&(d.Content)) }
 
 type UnzipStaLs struct {
 	StaL     []Sta
@@ -46,9 +51,10 @@ type Shot struct {
 	time.Time `json:"timestamp" bson:"timestamp"`
 }
 
-func (d *Downloaded) ParseAll() (uz UnzipStaLs, slocerr, dataerr error) {
-	uz.StaL, uz.LocStaL, slocerr = d.ParseStaWithLoc()
-	uz.StaDataL, dataerr = d.ParseData()
+func (d *Downloaded) ParseAll() (uz UnzipStaLs, slocerr, dataerr error) { return ParseAll(&(d.Content)) }
+func ParseAll(s *string) (uz UnzipStaLs, slocerr, dataerr error) {
+	uz.StaL, uz.LocStaL, slocerr = ParseStaWithLoc(s)
+	uz.StaDataL, dataerr = ParseData(s)
 	return
 }
 
