@@ -14,15 +14,32 @@ const THE_URL = "http://trm24.pl/panel-trm/maps.jsp"
 func Download() (d Downloaded, err error) { return DownloadFromURL(THE_URL) }
 func DownloadFromURL(url string) (d Downloaded, err error) {
 	d.Time = time.Now()
+	var cb func() string
+	cb, err = downloadfromurlintocallbackstring(url)
+	if err != nil {
+		d.Content = cb()
+	}
+	return
+}
+func downloadfromurlintocallbackstring(url string) (cb func() string, err error) {
 	response, err := http.Get(url)
 	if err == nil {
 		defer response.Body.Close()
 		buf := new(bytes.Buffer)
 		buf.ReadFrom(response.Body)
-		d.Content = buf.String()
+		cb = buf.String
 	}
 	return
 }
+func DownloadStringFromURL(url string) (s string, err error) {
+	var cb func() string
+	cb, err = downloadfromurlintocallbackstring(url)
+	if err != nil {
+		s = cb()
+	}
+	return
+}
+func DownloadString() (s string, err error) { return DownloadStringFromURL(THE_URL) }
 
 func ParseSta(s *string) (staout []Sta, err error) {
 	staout, _, err = pars(s, false)
