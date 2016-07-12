@@ -15,22 +15,27 @@ var WewnString string
 func GiveWewnString() string  { return WewnString }
 func TakeWewnString(s string) { WewnString = s }
 
-func ParseAll() error {
+func ParseAll() string {
 	var jeden, drugi error
 	UnzipStaLs, jeden, drugi = get.ParseAll(&WewnString)
 	if jeden != nil {
-		return jeden
+		return jeden.Error()
 	}
-	return drugi
+	return drugi.Error()
 }
 
-func ZipUzS() (err error) { AllSta, err = UnzipStaLs.Zip(); return }
+func ZipUzS() string { var err error; AllSta, err = UnzipStaLs.Zip(); return err.Error() }
 
 const THE_URL = get.THE_URL
 
-func GoHTTPDownloadStringFromURL(url string) (err error) {
+func GoHTTPDownloadStringFromURL(url string) string {
+	var err error
 	WewnString, err = get.DownloadStringFromURL(url)
-	return
+	return err.Error()
 }
 
-func GoHTTPDownloadString() (err error) { WewnString, err = get.DownloadString(); return }
+func GoHTTPDownloadString() string {
+	var err error
+	WewnString, err = get.DownloadString()
+	return err.Error()
+}
