@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-const THE_URL = "http://trm24.pl/panel-trm/maps.jsp"
+const THE_URL = "https://trm24.pl/panel-trm/maps.jsp"
 
 func Download() (d Downloaded, err error) { return DownloadFromURL(THE_URL) }
 func DownloadFromURL(url string) (d Downloaded, err error) {
