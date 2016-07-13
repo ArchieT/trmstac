@@ -28,6 +28,7 @@ func ZipUzS() string { var err error; AllSta, err = UnzipStaLs.Zip(); return err
 
 const THE_URL = get.THE_URL
 
+/*
 func GoHTTPDownloadStringFromURL(url string) string {
 	var err error
 	WewnString, err = get.DownloadStringFromURL(url)
@@ -39,3 +40,4 @@ func GoHTTPDownloadString() string {
 	WewnString, err = get.DownloadString()
 	return err.Error()
 }
+*/
