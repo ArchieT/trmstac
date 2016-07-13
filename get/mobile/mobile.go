@@ -10,6 +10,9 @@ var AllSta []get.AllSta
 
 func GiveAllSta() []get.AllSta { return AllSta }
 
+func GiveAllStaLen() int              { return len(AllSta) }
+func GiveAllStaItem(i int) get.AllSta { return AllSta[i] }
+
 var WewnString string
 
 func GiveWewnString() string  { return WewnString }
