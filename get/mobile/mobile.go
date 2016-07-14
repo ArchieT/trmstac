@@ -73,10 +73,10 @@ func ParseAll() string {
 	var jeden, drugi error
 	UnzipStaLs, jeden, drugi = get.ParseAll(&WewnString)
 	if jeden != nil {
-		return jeden.Error()
+		return "slocerr: " + jeden.Error()
 	}
 	if drugi != nil {
-		return drugi.Error()
+		return "dataerr: " + drugi.Error()
 	}
 	return ""
 }
