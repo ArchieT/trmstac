@@ -15,12 +15,12 @@ func GiveAllSta() []get.AllSta { return AllSta }
 func GiveAllStaLen() int              { return len(AllSta) }
 func GiveAllStaItem(i int) get.AllSta { return AllSta[i] }
 
-func GiveASpRow(i int) uint8   { return GiveAllStaItem[i].Sta.Row }
-func GiveASpWol(i int) uint8   { return GiveAllStaItem[i].Sta.Wol }
-func GiveASpNum(i int) uint8   { return GiveAllStaItem[i].Sta.Num }
-func GiveASpLat(i int) float64 { return GiveAllStaItem[i].LocSta.Location.Lat }
-func GiveASpLon(i int) float64 { return GiveAllStaItem[i].LocSta.Location.Lon }
-func GiveASpAddr(i int) string { return GiveAllStaItem[i].StaData.Addr }
+func GiveASpRow(i int) uint8   { return GiveAllStaItem(i).Sta.Row }
+func GiveASpWol(i int) uint8   { return GiveAllStaItem(i).Sta.Wol }
+func GiveASpNum(i int) uint8   { return GiveAllStaItem(i).Sta.Num }
+func GiveASpLat(i int) float64 { return GiveAllStaItem(i).LocSta.Location.Lat }
+func GiveASpLon(i int) float64 { return GiveAllStaItem(i).LocSta.Location.Lon }
+func GiveASpAddr(i int) string { return GiveAllStaItem(i).StaData.Addr }
 
 //func GiveMobASItem(i int) MobAS       { return MobAS(GiveAllStaItem(i)) }
 
