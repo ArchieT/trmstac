@@ -8,7 +8,7 @@ func GiveUnzipStaLs() get.UnzipStaLs { return UnzipStaLs }
 
 var AllSta []get.AllSta
 
-type MobAS AllSta
+type MobAS get.AllSta
 
 func GiveAllSta() []get.AllSta { return AllSta }
 
