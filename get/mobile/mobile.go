@@ -8,10 +8,13 @@ func GiveUnzipStaLs() get.UnzipStaLs { return UnzipStaLs }
 
 var AllSta []get.AllSta
 
+type MobAS AllSta
+
 func GiveAllSta() []get.AllSta { return AllSta }
 
 func GiveAllStaLen() int              { return len(AllSta) }
 func GiveAllStaItem(i int) get.AllSta { return AllSta[i] }
+func GiveMobASItem(i int) MobAS       { return MobAS(GiveAllStaItem(i)) }
 
 var WewnString string
 
