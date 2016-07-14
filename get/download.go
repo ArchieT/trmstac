@@ -100,8 +100,9 @@ func (fptl *fromplacetolen) next() {
 }
 
 func (uz *UnzipStaLs) Zip() (as []AllSta, err error) {
-	if !inteqall(len(uz.StaL), len(uz.LocStaL), len(uz.StaDataL)) {
-		err = errors.New("not equal lenghts")
+	lensta, lenloc, lendat := len(uz.StaL), len(uz.LocStaL), len(uz.StaDataL)
+	if !inteqall(lensta, lenloc, lendat) {
+		err = errors.New("not equal lenghts: " + strconv.Itoa(lensta) + " " + strconv.Itoa(lenloc) + " " + strconv.Itoa(lendat))
 	}
 	as = make([]AllSta, len(uz.StaL))
 	var wg sync.WaitGroup
