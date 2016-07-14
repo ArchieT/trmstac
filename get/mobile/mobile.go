@@ -1,6 +1,16 @@
 package mobile
 
 import "github.com/ArchieT/trmstac/get"
+import "strconv"
+
+const (
+	IDXROW int = iota
+	IDXWOL
+	IDXNUM
+	IDXLAT
+	IDXLON
+	IDXADDR
+)
 
 var UnzipStaLs get.UnzipStaLs
 
@@ -21,6 +31,25 @@ func GiveASpNum(i int) uint8   { return GiveAllStaItem(i).Sta.Num }
 func GiveASpLat(i int) float64 { return GiveAllStaItem(i).LocSta.Location.Lat }
 func GiveASpLon(i int) float64 { return GiveAllStaItem(i).LocSta.Location.Lon }
 func GiveASpAddr(i int) string { return GiveAllStaItem(i).StaData.Addr }
+
+func ourfmtloc(f float64) string {
+	return strconv.FormatFloat(f, 'f', -1, 64)
+}
+
+func ourfmtuint8(u uint8) string {
+	return strconv.Itoa(int(u))
+}
+
+func GiveASpSTRTUP(i int) (r [6]string) {
+	o := GiveAllStaItem(i)
+	r[IDXROW] = ourfmtuint8(o.Row)
+	r[IDXWOL] = ourfmtuint8(o.Wol)
+	r[IDXNUM] = ourfmtuint8(o.Sta.Num)
+	r[IDXLAT] = ourfmtloc(o.Lat)
+	r[IDXLON] = ourfmtloc(o.Lon)
+	r[IDXADDR] = o.Addr
+	return
+}
 
 //func GiveMobASItem(i int) MobAS       { return MobAS(GiveAllStaItem(i)) }
 
