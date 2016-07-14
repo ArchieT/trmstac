@@ -75,7 +75,10 @@ func ParseAll() string {
 	if jeden != nil {
 		return jeden.Error()
 	}
-	return drugi.Error()
+	if drugi != nil {
+		return drugi.Error()
+	}
+	return nil
 }
 
 func ZipUzS() string { var err error; AllSta, err = UnzipStaLs.Zip(); return err.Error() }
