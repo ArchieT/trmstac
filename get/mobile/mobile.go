@@ -81,7 +81,14 @@ func ParseAll() string {
 	return ""
 }
 
-func ZipUzS() string { var err error; AllSta, err = UnzipStaLs.Zip(); return err.Error() }
+func ne(err error) string {
+	if err != nil {
+		return err.Error()
+	}
+	return ""
+}
+
+func ZipUzS() string { var err error; AllSta, err = UnzipStaLs.Zip(); return ne(err) }
 
 const THE_URL = get.THE_URL
 
