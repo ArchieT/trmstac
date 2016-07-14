@@ -40,7 +40,18 @@ func ourfmtuint8(u uint8) string {
 	return strconv.Itoa(int(u))
 }
 
-func GiveASpSTRTUP(i int) (r [6]string) {
+type sixstring [6]string
+
+func (ss *sixstring) Give(i int) string {
+	return ss[i]
+}
+
+type GiveByInt interface {
+	Give(int) string
+}
+
+func GiveASpSTRTUP(i int) GiveByInt {
+	var r sixstring
 	o := GiveAllStaItem(i)
 	r[IDXROW] = ourfmtuint8(o.Row)
 	r[IDXWOL] = ourfmtuint8(o.Wol)
@@ -48,7 +59,7 @@ func GiveASpSTRTUP(i int) (r [6]string) {
 	r[IDXLAT] = ourfmtloc(o.Lat)
 	r[IDXLON] = ourfmtloc(o.Lon)
 	r[IDXADDR] = o.Addr
-	return
+	return r
 }
 
 //func GiveMobASItem(i int) MobAS       { return MobAS(GiveAllStaItem(i)) }
