@@ -42,7 +42,7 @@ func ourfmtuint8(u uint8) string {
 
 type sixstring [6]string
 
-func (ss *sixstring) Give(i int) string {
+func (ss sixstring) Give(i int) string {
 	return ss[i]
 }
 
