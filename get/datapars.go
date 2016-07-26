@@ -2,7 +2,6 @@ package get
 
 import (
 	"errors"
-	"regexp"
 	"strconv"
 )
 
@@ -10,8 +9,6 @@ type StaData struct {
 	Num  uint8  `json:"num" bson:"num"`
 	Addr string `json:"addr" bson:"addr"`
 }
-
-var rdall = regexp.MustCompile(`<a href="javascript:google\.maps\.event\.trigger\(gmarkers\[(?P<gmarkersindex>\d{1,2})\],'click'\);"><b> ? ? ? ?Stacja nr\. (?P<stacnumber>\d{1,2})\. (?P<address>[^\a\f\t\n\r\v\<\>]{5,}?) {0,5}?</b> ? ? ? ?</a> ? ? ? ?<[Bb]r>`)
 
 func (d *Downloaded) ParseInfoIntoAddrList() (lista []string, err error) {
 	return ParseInfoIntoAddrList(&(d.Content))

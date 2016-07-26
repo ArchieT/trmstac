@@ -1,7 +1,6 @@
 package get
 
 import (
-	"regexp"
 	"strconv"
 	"sync"
 )
@@ -21,9 +20,6 @@ type LocSta struct {
 	Num      uint8 `json:"num" bson:"num"`
 	Location `json:"location" bson:"location"`
 }
-
-//rall := regexp.MustCompile(`Stacja nr\s \d+\s+</br>\s+Dostępne rowery: \d+\s+</br>\s+Wolne sloty \d+ ', \d+\.\d+ , \d+\.\d+ , 'http:`)
-var rall = regexp.MustCompile(`Stacja nr ? (?P<nrsta>\d{1,2}) ? ? ? ? ?</br> ? ? ? ? ? ?Dostępne rowery: (?P<dostrow>\d{1,2}) ? ? ? ?</br> ? ? ? ?Wolne sloty (?P<wolrow>\d{1,2}) ', (?P<lat>\d+\.\d+) , (?P<lon>\d+\.\d+) , 'http`)
 
 var raliw = make(map[string]int, 30)
 
