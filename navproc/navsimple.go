@@ -1,7 +1,5 @@
 package navproc
 
-import "github.com/ArchieT/trmstac/stadata"
-
 type FTStaEntrInterface interface {
 	TimeSec() uint16
 }
@@ -10,12 +8,19 @@ type FTStaWFunc func(FTStaEntrInterface) uint16
 
 //type FTStaEntrInterfaceMatrix [stadata.ILOSCSTA][stadata.ILOSCSTA]FTStaEntrInterface
 
-func ShortestPath(g [stadata.ILOSCSTA][stadata.ILOSCSTA]FTStaEntrInterface, w FTStaWFunc, from, to uint8) (uint16, []uint8) {
-	var d [stadata.ILOSCSTA]uint16
-	var p [stadata.ILOSCSTA]uint8
-	q := make([]uint8, stadata.ILOSCSTA)
+func ShortestPath(g [][]FTStaEntrInterface, w FTStaWFunc, from, to uint8) (uint16, []uint8) {
+	naszailoscstacjiint := len(g)
+	for _, gte := range g {
+		if len(gte) != naszailoscstacjiint {
+			panic(gte)
+		}
+	}
+	naszailoscstacji := uint8(naszailoscstacjiint)
+	var d []uint16
+	var p []uint8
+	q := make([]uint8, naszailoscstacji)
 	var v uint8
-	for v = 0; v < stadata.ILOSCSTA; v++ {
+	for v = 0; v < naszailoscstacji; v++ {
 		d[v] = ^uint16(0)
 		p[v] = ^uint8(0)
 		q[v] = v
@@ -23,7 +28,7 @@ func ShortestPath(g [stadata.ILOSCSTA][stadata.ILOSCSTA]FTStaEntrInterface, w FT
 	d[from] = 0
 	for len(q) > 0 {
 		u, q := q[0], q[:1]
-		for v = 0; v < stadata.ILOSCSTA; v++ {
+		for v = 0; v < naszailoscstacji; v++ {
 			if d[v] > d[u]+w((g[u][v])) {
 				d[v] = d[u] + w((g[u][v]))
 				p[v] = u
@@ -31,7 +36,7 @@ func ShortestPath(g [stadata.ILOSCSTA][stadata.ILOSCSTA]FTStaEntrInterface, w FT
 			}
 		}
 	}
-	poprzednicy := make([]uint8, 0, stadata.ILOSCSTA)
+	poprzednicy := make([]uint8, 0, naszailoscstacji)
 	niemafrom := true
 	poprzednicy = append(poprzednicy, to)
 	for niemafrom {
